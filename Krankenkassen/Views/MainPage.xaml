@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Krankenkassen.MainPage"
+             xmlns:vm="clr-namespace:Krankenkassen.ViewModel"
+             xmlns:templates="clr-namespace:Krankenkassen.DataTemplates"
+             Title="Krankenkassen"
+             xmlns:converters="clr-namespace:Krankenkassen.Converters"
+             x:DataType="vm:MainpageVM">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <templates:Selector x:Key="selector"></templates:Selector>
+            <converters:PathConverter x:Key="pathConverter"></converters:PathConverter>
+            <converters:IntToBoolConverter x:Key="intConverter"></converters:IntToBoolConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="auto,60,auto,*" Padding="10" RowSpacing="5" >
+        <HorizontalStackLayout FlowDirection="RightToLeft" Spacing="10">
+            <!--Select Button-->
+            <Frame BorderColor="Transparent" BackgroundColor="Transparent"
+                   Padding="0"
+                   WidthRequest="120">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectFileCommand}"></TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+                <VerticalStackLayout>
+                    <Image Source="filetype_csv.png" HeightRequest="20"/>
+                    <Label FontSize="12" HorizontalTextAlignment="Center" TextColor="{x:StaticResource Primary}" Text="Datei auswählen"/>
+                </VerticalStackLayout>
+            </Frame>
+            <!--#region Delete Button-->
+            <Frame BorderColor="Transparent" BackgroundColor="Transparent"
+                   Padding="0"
+                   IsEnabled="false"
+                   Opacity=".5"
+                   WidthRequest="120">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DeleteCommand}"></TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+                <Frame.Triggers>
+                    <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference collection}, Path=SelectedItems.Count , Converter={x:StaticResource intConverter}}" Value="true">
+                        <Setter Property="IsEnabled" Value="true"/>
+                        <Setter Property="Opacity" Value="1"/>
+                    </DataTrigger>
+                </Frame.Triggers>
+                <VerticalStackLayout>
+                    <Image Source="file_earmark_minus.png" HeightRequest="20"/>
+                    <Label FontSize="12" HorizontalTextAlignment="Center" TextColor="Red" Text="Ausgewählte löschen"/>
+                </VerticalStackLayout>
+            </Frame>
+            <!--#endregion-->
+            <!--#region Copy Button-->
+            <Frame BorderColor="Transparent" BackgroundColor="Transparent"
+       Padding="0"
+       IsEnabled="false"
+       Opacity=".5"
+       WidthRequest="120">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CreateCommand}"></TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+                <Frame.Triggers>
+                    <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference collection}, Path=SelectedItems.Count , Converter={x:StaticResource intConverter}}" Value="true">
+                        <Setter Property="IsEnabled" Value="true"/>
+                        <Setter Property="Opacity" Value="1"/>
+                    </DataTrigger>
+                </Frame.Triggers>
+                <VerticalStackLayout>
+                    <Image Source="folder_plus.png" HeightRequest="20"/>
+                    <Label FontSize="12" HorizontalTextAlignment="Center" TextColor="Green" Text="Neu erstellen"/>
+                </VerticalStackLayout>
+            </Frame>
+            <!--#endregion-->
+            <Label Text="{Binding FilePath , Mode=TwoWay}" Margin="10,0,10,0" HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" TextColor="{x:StaticResource Primary}">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding FilePath , Converter={x:StaticResource pathConverter}}" Value="false">
+                        <Setter Property="Text" Value="Keine Daten ausgewählt oder Datenformat nicht erlaubt. Bitte wählen Sie eine csv-Datei"></Setter>
+                        <Setter Property="TextColor" Value="HotPink"></Setter>
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+        </HorizontalStackLayout>
+
+        <Entry Grid.Row="1" Placeholder="Suche nach Daten" IsVisible="false"
+               Text="{Binding Search}">
+            <Entry.Triggers>
+                <DataTrigger TargetType="Entry" Binding="{Binding FilePath , Converter={x:StaticResource pathConverter}}" Value="true">
+                    <Setter Property="IsVisible" Value="true"></Setter>
+                </DataTrigger>
+            </Entry.Triggers>
+        </Entry>
+        <CollectionView x:Name="collection"
+                        Grid.Row="3" 
+                        ItemTemplate="{x:StaticResource selector}" 
+                        ItemsSource="{Binding Lines}"
+                        SelectionMode="Multiple"
+                        SelectedItems="{Binding SelectedItems}">
+            <CollectionView.ItemsLayout >
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="1"></LinearItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.EmptyView>
+                <StackLayout>
+                    <Label Text="No items to show"></Label>
+                    <Image Source="dotnet_bot.png" HeightRequest="200" WidthRequest="200"></Image>
+                </StackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

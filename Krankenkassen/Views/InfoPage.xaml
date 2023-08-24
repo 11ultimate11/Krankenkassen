@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Krankenkassen.Views.InfoPage"
+             Title="Info">
+    <ScrollView Orientation="Vertical">
+        <Grid RowDefinitions="auto,*">
+            <Button Text="Zurück" HorizontalOptions="End"
+            Clicked="Button_Clicked"></Button>
+            <StackLayout Grid.Row="1">
+                <Label Text="Beschreibung der Anwendung"
+               FontSize="25"
+               TextColor="{x:StaticResource Primary}"></Label>
+                <Label Text="Diese Anwendung wurde entwickelt, um eine Csv-Datei zu laden, zu lesen und grafisch darzustellen, sowie eine Suchfunktion nach Name, Adresse oder oder IK"></Label>
+                <Label Text="Diese Anwendung bietet die Möglichkeit, ausgewählte Elemente vorübergehend zu löschen oder ein neues Dokument auf demselben Pfad wie die ausgewählten Elemente zu erstellen."></Label>
+                <Label Text="Diese Anwendung folgt der MVVM-Architektur"></Label>
+                <Label Text="Diese Anwendung nutzt die Injektion von Abhängigkeiten"></Label>
+                <Label Text="Folders : " FontAttributes="Bold"></Label>
+                <StackLayout Margin="10,0,0,0">
+                    <Label Text=" - Models : enthält die von app verwendeten Modelle"></Label>
+                    <Label Text=" - Views : enthält die Ansichtsseiten"></Label>
+                    <Label Text=" - ViewModel : enthält den Anmeldecode hinter den Ansichtsseiten"></Label>
+                    <Label Text=" - Global : enthält statische Klassen, die globale Werte für die Anwendung setzen"></Label>
+                    <Label Text=" - Helpers : enthält Hilfsklassen und deren Schnittstellen, die Daten verarbeiten und die Funktionsfähigkeit des Codes aufrechterhalten"></Label>
+                    <Label Text=" - Converters : enthält Klassen die IValueConverter implementieren um Werte nach bool zu konvertieren für die XAML Triggers"></Label>
+                    <Label Text=" - Components : enthält xaml-Ansichten/Komponenten im Interesse der Wiederverwendbarkeit von Code"></Label>
+                    <Label Text=" - DataTemplates : enthält Selektor- und Template-Klassen, um die Menge des Xaml-Codes zu reduzieren"></Label>
+                </StackLayout>
+                <Label Text="Weitere Informationen finden Sie in den Anwendungsdateien, die sorgfältig dokumentiert sind."
+                       TextColor="DodgerBlue" FontAttributes="Bold"></Label>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

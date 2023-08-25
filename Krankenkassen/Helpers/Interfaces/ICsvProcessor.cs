@@ -32,6 +32,7 @@ namespace Krankenkassen.Helpers.Interfaces
         /// <param name="data">Die Sammlung von CsvLineModel-Daten, die in die CSV-Datei geschrieben werden soll.</param>
         /// <param name="path">Der Verzeichnispfad, in dem die neue CSV-Datei erstellt werden soll.</param>
         /// <returns>Returnt true, wenn die CSV-Datei erfolgreich erstellt und geschrieben wurde, oder false, wenn nicht.</returns>
-        bool CreateNewCsvFile(IEnumerable<CsvLineModel> data, string path);
+        Task<bool> CreateNewCsvFileAsync(IEnumerable<CsvLineModel> data, string path);
+        Task<bool> SaveFileAsync(ICsvModel model);
     }
 }

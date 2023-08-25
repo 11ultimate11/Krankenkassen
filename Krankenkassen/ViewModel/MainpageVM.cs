@@ -24,8 +24,9 @@ public class MainpageVM : BaseViewModel
         this._timer = _timer;
         //Einstellung der Befehle
         SelectFileCommand = new AsyncCommand(SelectFile);
+        SaveCommand = new AsyncCommand(SaveAsync);
         DeleteCommand = new MvvmHelpers.Commands.Command(Delete);
-        CreateCommand = new MvvmHelpers.Commands.Command(Create);
+        CreateCommand = new AsyncCommand(Create);
         //Anmeldung beim Timer-Delegaten
         _timer.TimeExpiredCallback +=AppSettings_TimeExpiredCallback;
     }
@@ -37,7 +38,8 @@ public class MainpageVM : BaseViewModel
     #region Commands
     public AsyncCommand SelectFileCommand { get; set; }
     public MvvmHelpers.Commands.Command DeleteCommand { get; set; }
-    public MvvmHelpers.Commands.Command CreateCommand { get; set; }
+    public AsyncCommand CreateCommand { get; set; }
+    public AsyncCommand SaveCommand { get; set; }
     #endregion
     #region Bindable Properties
     private string filePath;
@@ -143,14 +145,19 @@ public class MainpageVM : BaseViewModel
             Lines.RemoveRange(select);
         }
     }
-    private void Create()
+    private async Task Create()
     {
         if (SelectedItems is not null && SelectedItems.Any())
         {
             var select = SelectedItems.Cast<CsvLineModel>();
-            var result = _csv.CreateNewCsvFile(select , model.GetDirectory());
-            MainPage.Instance.DisplayAlert(result ? "Succes" : "Sorry", result ? "Datei wurde erfolgreich geschrieben" : "Die Datei konnte nicht geschrieben werden", "OK");
+            var result = await _csv.CreateNewCsvFileAsync(select , model.GetDirectory());
+            await MainPage.Instance.DisplayAlert(result ? "Succes" : "Sorry", result ? "Datei wurde erfolgreich geschrieben" : "Die Datei konnte nicht geschrieben werden", "OK");
         }
+    }
+    private async Task SaveAsync()
+    {
+        var result = await _csv.SaveFileAsync(model);
+        await MainPage.Instance.DisplayAlert(result ? "Succes" : "Sorry", result ? "Datei wurde erfolgreich gespeichert" : "Die Datei konnte nicht gespeichert werden", "OK");
     }
 
     #endregion

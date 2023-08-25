@@ -54,18 +54,25 @@
 	  <None Remove="Resources\Images\filetype_csv.svg" />
 	  <None Remove="Resources\Images\file_earmark_minus.svg" />
 	  <None Remove="Resources\Images\folder_plus.svg" />
+	  <None Remove="Resources\Images\sd_card.svg" />
 	  <None Remove="Resources\Images\text_left.svg" />
 	  <None Remove="Resources\Images\trash3.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
+		<PackageReference Include="CommunityToolkit.Maui.Core" Version="5.3.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
+		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Components\CsvLineComponent.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Popups\EditFieldPop.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\InfoPage.xaml">

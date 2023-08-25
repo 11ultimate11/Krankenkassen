@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<cmt:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Krankenkassen.Popups.EditFieldPop"
+               xmlns:cmt="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <Frame CornerRadius="0">
+        <AbsoluteLayout>
+            <Label Text="Wert bearbeiten"
+                   TextColor="{x:StaticResource Primary}"
+                   AbsoluteLayout.LayoutFlags="PositionProportional"
+                   AbsoluteLayout.LayoutBounds="0,0"/>
+            <Entry x:Name="entry" 
+                   AbsoluteLayout.LayoutFlags="PositionProportional"
+                   AbsoluteLayout.LayoutBounds=".5,.5,250,40"/>
+            <Button Text="Speichern"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="1,1,100,50"
+                    Clicked="Button_Clicked"/>
+        </AbsoluteLayout>
+    </Frame>
+</cmt:Popup>

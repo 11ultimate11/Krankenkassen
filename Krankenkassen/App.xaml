@@ -9,6 +9,10 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <x:Boolean x:Key="save">false</x:Boolean>
+            
+            <Color x:Key="mycolor">#1976D2</Color>
             <Style x:Key="gridSlected" TargetType="Grid">
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
@@ -17,7 +21,6 @@
                             <VisualState x:Name="Selected">
                                 <VisualState.Setters>
                                     <Setter Property="BackgroundColor" Value="{x:StaticResource Primary}"/>
-                                    <Setter Property="Margin" Value="15,0,0,0"/>
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>

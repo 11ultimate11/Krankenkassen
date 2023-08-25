@@ -16,7 +16,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="auto,60,auto,*" Padding="10" RowSpacing="5" >
+    <Grid RowDefinitions="auto,60,auto,*" Padding="10" RowSpacing="5" x:Name="mainGrid">
         <HorizontalStackLayout FlowDirection="RightToLeft" Spacing="10">
             <!--Select Button-->
             <Frame BorderColor="Transparent" BackgroundColor="Transparent"
@@ -72,6 +72,27 @@
                 </VerticalStackLayout>
             </Frame>
             <!--#endregion-->
+            <!--#region Save Button-->
+            <Frame BorderColor="Transparent" BackgroundColor="Transparent"
+        Padding="0"
+        IsEnabled="false"
+        Opacity=".5"
+        WidthRequest="120">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SaveCommand}"></TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+                <Frame.Triggers>
+                    <DataTrigger TargetType="Frame" Binding="{Binding FilePath , Converter={x:StaticResource pathConverter}}" Value="true">
+                        <Setter Property="IsEnabled" Value="true"/>
+                        <Setter Property="Opacity" Value="1"/>
+                    </DataTrigger>
+                </Frame.Triggers>
+                <VerticalStackLayout>
+                    <Image Source="sd_card.png" HeightRequest="20"/>
+                    <Label FontSize="12" HorizontalTextAlignment="Center" TextColor="DodgerBlue" Text="Speichern"/>
+                </VerticalStackLayout>
+            </Frame>
+            <!--#endregion-->
             <Label Text="{Binding FilePath , Mode=TwoWay}" Margin="10,0,10,0" HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" TextColor="{x:StaticResource Primary}">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label" Binding="{Binding FilePath , Converter={x:StaticResource pathConverter}}" Value="false">
@@ -80,6 +101,7 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
+            <!--<Button Text="print" Clicked="printBtn_Clicked" x:Name="printBtn"></Button>-->
         </HorizontalStackLayout>
 
         <Entry Grid.Row="1" Placeholder="Suche nach Daten" IsVisible="false"

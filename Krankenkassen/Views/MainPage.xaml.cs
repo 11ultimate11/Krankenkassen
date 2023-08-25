@@ -1,5 +1,8 @@
-﻿using Krankenkassen.ViewModel;
+﻿using Krankenkassen.Helpers.Processors;
+using Krankenkassen.PlatformInterfaces;
+using Krankenkassen.ViewModel;
 using Krankenkassen.Views;
+using System.Diagnostics;
 
 namespace Krankenkassen
 {
@@ -11,12 +14,15 @@ namespace Krankenkassen
         /// Diese Instanz darf nur ein einziges Mal zur Laufzeit instanziiert werden
         /// </summary>
         public static MainPage Instance { get; set; }
+        //private IPrintProcessor _printer;
         public MainPage(MainpageVM vm)
         {
             InitializeComponent();
             BindingContext = vm;
             Instance = this;
-            
+            //_printer = _print;
+
         }
+
     }
 }

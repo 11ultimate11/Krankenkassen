@@ -19,5 +19,6 @@ public static class AppSettings
     /// Tick time
     /// </summary>
     public static int Interval => 50;
+    public static bool Edited { get; set; }
     
 }

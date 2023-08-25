@@ -1,15 +1,21 @@
+using CommunityToolkit.Maui.Views;
 using Krankenkassen.Models.Model;
+using Krankenkassen.Popups;
+using MvvmHelpers.Commands;
+using System.Windows.Input;
 
 namespace Krankenkassen.Components;
 
 public partial class CsvLineComponent : Grid
 {
     private object color;
+    private readonly CsvLineModel model;
     public CsvLineComponent(CsvLineModel data)
     {
         _ = Application.Current.Resources.TryGetValue("Primary", out color);
         InitializeComponent();
-        CreateItem(data);
+        model = data;
+        CreateItem(model);
     }
     /// <summary>
     /// Erstellung und Rückgabe eines Rasters in Abhängigkeit von der Datenlänge
@@ -31,7 +37,7 @@ public partial class CsvLineComponent : Grid
         RowDefinitions = rows;
         for (int i = 0; i < columns + 2; i++)
         {
-            ColumnDefinition columnDefinition = new ();
+            ColumnDefinition columnDefinition = new();
             if (i == 0)
             {
                 columnDefinition.Width = new GridLength(1, GridUnitType.Auto);
@@ -57,10 +63,11 @@ public partial class CsvLineComponent : Grid
         int index = 2;
         foreach (string item in data)
         {
-            Label lbl = new() { Text = item , VerticalTextAlignment = TextAlignment.Center };
+            Label lbl = new() { Text = item, VerticalTextAlignment = TextAlignment.Center };
             Grid.SetColumn(lbl, index++);
             SetLabelChildDataTrigger(lbl);
             Children.Add(lbl);
+            AddCommand(lbl , Array.IndexOf(data , item));
         }
     }
     private void SetLabelChildDataTrigger(Label lbl)
@@ -103,7 +110,7 @@ public partial class CsvLineComponent : Grid
         Children.Add(img2);
         SetImagesTriggers(img, img2);
     }
-    private void SetImagesTriggers(Image img , Image img2)
+    private void SetImagesTriggers(Image img, Image img2)
     {
         DataTrigger trigger = new(typeof(Image))
         {
@@ -130,5 +137,19 @@ public partial class CsvLineComponent : Grid
         };
         trigger2.Setters.Add(setter2);
         img2.Triggers.Add(trigger2);
+    }
+    private void AddCommand(Label lbl , int index)
+    {
+        var command = new MvvmHelpers.Commands.Command(()=> ExecuteEditCommand(lbl , model , index));
+        GestureRecognizer gestureRecognizer = new TapGestureRecognizer()
+        {
+            Command = command
+            ,NumberOfTapsRequired = 2
+        };
+        lbl.GestureRecognizers.Add(gestureRecognizer);
+    }
+    private void ExecuteEditCommand(Label lbl , CsvLineModel line , int index)
+    {
+        MainPage.Instance.ShowPopup(new EditFieldPop(lbl, line, index));
     }
 }

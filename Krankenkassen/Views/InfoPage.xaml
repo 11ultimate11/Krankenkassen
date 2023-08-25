@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Krankenkassen.Views.InfoPage"
              Title="Info">
-    <ScrollView Orientation="Vertical">
+    <ScrollView Orientation="Vertical" x:Name="mainInfo">
         <Grid RowDefinitions="auto,*">
             <Button Text="Zurück" HorizontalOptions="End"
             Clicked="Button_Clicked"></Button>

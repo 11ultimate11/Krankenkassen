@@ -3,6 +3,7 @@ using Krankenkassen.Models.Interfaces;
 using Krankenkassen.Models.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,7 +78,7 @@ public class CsvProcessor : ICsvProcessor
     /// <param name="data">Die Sammlung von CsvLineModel-Daten, die in die CSV-Datei geschrieben werden soll.</param>
     /// <param name="path">Der Verzeichnispfad, in dem die neue CSV-Datei erstellt werden soll.</param>
     /// <returns>Returnt true, wenn die CSV-Datei erfolgreich erstellt und geschrieben wurde, oder false, wenn nicht.</returns>
-    public bool CreateNewCsvFile(IEnumerable<CsvLineModel> data , string path)
+    public async Task<bool> CreateNewCsvFileAsync(IEnumerable<CsvLineModel> data , string path)
     {
         if (data is null || !data.Any() || string.IsNullOrEmpty(path)) return false;
         try
@@ -86,13 +87,30 @@ public class CsvProcessor : ICsvProcessor
             using var stream = new StreamWriter(Path.Combine(path , newpath));
             foreach (var line in data)
             {
-                stream.WriteLine(line.GetCsvString());
+                await stream.WriteLineAsync(line.GetCsvString());
             }
             return true;
         }
         catch (Exception ex)
         {
-            MainPage.Instance.DisplayAlert("Error", $"Beim Schreiben der neuen Datei ist ein Fehler aufgetreten.\n{ex.Message}" , "OK");
+            await MainPage.Instance.DisplayAlert("Error", $"Beim Schreiben der neuen Datei ist ein Fehler aufgetreten.\n{ex.Message}" , "OK");
+            return false;
+        }
+    }
+    public async Task<bool> SaveFileAsync(ICsvModel model)
+    {
+        if (!File.Exists(model.FilePath)) return false;
+        try
+        {
+            using var writer = new StreamWriter(model.FilePath);
+            foreach (var line in model.Lines)
+            {
+                await writer.WriteLineAsync(line.GetCsvString());
+            }
+            return true;
+        }
+        catch
+        {
             return false;
         }
     }
